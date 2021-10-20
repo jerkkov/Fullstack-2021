@@ -32,18 +32,25 @@ const App = () => {
   
   //Example 1.7 seems to return different value
   const Statistics = ({good, neutral, bad}) => {
+    if (good === 0 && neutral === 0 && bad === 0) {
+      console.log(good, bad, neutral)
+      return (
+        <div>
+          No feedback given
+        </div>
+      )
+    }
     return (
-      <div>
-        <p>
-          Good {good}<br></br>
-          Neutral {neutral}<br></br>
+        <div>
+          Good {good} <br></br>
+          Neutral {neutral} <br></br>
           Bad {bad} <br></br>
           All {sum(good, neutral, bad)} <br></br>
           Average {avg()} <br></br>
           Positive {percentage(good, neutral, bad)} %
-        </p>
-      </div>
+        </div>
     )
+    
   }
   const avg = () =>  (good - bad) / sum(good , neutral, bad)
   const percentage = (a, b, c) => good / sum(good, neutral, bad) * 100
