@@ -31,8 +31,23 @@ const App = () => {
   const sum = (a, b, c) => a + b + c
   
   //Example 1.7 seems to return different value
-  const avg = n =>  (good - bad) / sum(good , neutral, bad)
+  const Statistics = ({good, neutral, bad}) => {
+    return (
+      <div>
+        <p>
+          Good {good}<br></br>
+          Neutral {neutral}<br></br>
+          Bad {bad} <br></br>
+          All {sum(good, neutral, bad)} <br></br>
+          Average {avg()} <br></br>
+          Positive {percentage(good, neutral, bad)} %
+        </p>
+      </div>
+    )
+  }
+  const avg = () =>  (good - bad) / sum(good , neutral, bad)
   const percentage = (a, b, c) => good / sum(good, neutral, bad) * 100
+
 
 
 
@@ -45,14 +60,9 @@ const App = () => {
       <Button handleClick={handleGoodClick} text='Good' /> 
       <Button handleClick={handleNeutralClick} text='Neutral' />
       <Button handleClick={handleBadClick} text='Bad' />
-
+    
       <h1>Statistics</h1>
-      Good {good}<br></br>
-      Neutral {neutral}<br></br>
-      Bad {bad} <br></br>
-      All {sum(good, neutral, bad)} <br></br>
-      Average {avg()} <br></br>
-      Positive {percentage(good, neutral, bad)} %
+      <Statistics good={good} neutral={neutral} bad={bad} />
       </div>
     </div>
   )
