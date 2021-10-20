@@ -6,11 +6,15 @@ const Button = ({ handleClick, text}) => (
   </button>
 )
 
+
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+ // const [all, setAll] = useState(0)
+
 
   const handleBadClick = () => {
     setBad(bad + 1)
@@ -24,6 +28,16 @@ const App = () => {
     setGood(good + 1)
   } 
 
+  const sum = (a, b, c) => a + b + c
+  
+  //Example 1.7 seems to return different value
+  const avg = n =>  (good - bad) / sum(good , neutral, bad)
+  const percentage = (a, b, c) => good / sum(good, neutral, bad) * 100
+
+
+
+  
+
   return (
     <div>
     <div>
@@ -35,7 +49,10 @@ const App = () => {
       <h1>Statistics</h1>
       Good {good}<br></br>
       Neutral {neutral}<br></br>
-      Bad {bad}
+      Bad {bad} <br></br>
+      All {sum(good, neutral, bad)} <br></br>
+      Average {avg()} <br></br>
+      Positive {percentage(good, neutral, bad)} %
       </div>
     </div>
   )
