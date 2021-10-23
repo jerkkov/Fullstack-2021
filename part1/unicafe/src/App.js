@@ -8,10 +8,10 @@ const Button = ({ handleClick, text}) => (
 
 //Statistic label component
 const StatisticsLine = ({text, value}) => (
-    <div>
-    {text} 
-    {value}<br></br>
-    </div>
+    <tr>
+    <td>‎‎{text}‎‎‎</td> 
+    <td>{value} </td>
+    </tr>
   )
 
 
@@ -51,29 +51,28 @@ const App = () => {
       )
     }
     return (
-        <div>
+      <table>
+        <tbody>
           <StatisticsLine text="Good " value={good} />
           <StatisticsLine text="Neutral " value={neutral} />
           <StatisticsLine text="Bad " value={bad} />
           <StatisticsLine text="All " value={sum(good, neutral, bad)} />
           <StatisticsLine text="Average " value={avg()} />
           <StatisticsLine text="Positive " value={percentage(good, neutral, bad) + " %"}  />
-        </div>
+          </tbody>
+      </table>
     )
     
   }
 
   return (
     <div>
-    <div>
       <h1>Give feedback</h1>
       <Button handleClick={handleGoodClick} text='Good' /> 
       <Button handleClick={handleNeutralClick} text='Neutral' />
       <Button handleClick={handleBadClick} text='Bad' />
-    
       <h1>Statistics</h1>
       <Statistics good={good} neutral={neutral} bad={bad} />
-      </div>
     </div>
   )
 }
