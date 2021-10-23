@@ -6,16 +6,23 @@ const Button = ({ handleClick, text}) => (
   </button>
 )
 
+//Statistic label component
+const StatisticsLine = ({text, value}) => (
+    <div>
+    {text} 
+    {value}<br></br>
+    </div>
+  )
+
 
 
 const App = () => {
-  // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
- // const [all, setAll] = useState(0)
 
 
+//Feedback button functions
   const handleBadClick = () => {
     setBad(bad + 1)
   } 
@@ -28,9 +35,12 @@ const App = () => {
     setGood(good + 1)
   } 
 
+  //Statisctic functions
   const sum = (a, b, c) => a + b + c
+  const avg = () =>  (good - bad) / sum(good , neutral, bad)
+  const percentage = (a, b, c) => good / sum(good, neutral, bad) * 100
   
-  //Example 1.7 seems to return different value
+  //Doesn't render unless feedback is given
   const Statistics = ({good, neutral, bad}) => {
     if (good === 0 && neutral === 0 && bad === 0) {
       console.log(good, bad, neutral)
@@ -42,23 +52,16 @@ const App = () => {
     }
     return (
         <div>
-          Good {good} <br></br>
-          Neutral {neutral} <br></br>
-          Bad {bad} <br></br>
-          All {sum(good, neutral, bad)} <br></br>
-          Average {avg()} <br></br>
-          Positive {percentage(good, neutral, bad)} %
+          <StatisticsLine text="Good " value={good} />
+          <StatisticsLine text="Neutral " value={neutral} />
+          <StatisticsLine text="Bad " value={bad} />
+          <StatisticsLine text="All " value={sum(good, neutral, bad)} />
+          <StatisticsLine text="Average " value={avg()} />
+          <StatisticsLine text="Positive " value={percentage(good, neutral, bad) + " %"}  />
         </div>
     )
     
   }
-  const avg = () =>  (good - bad) / sum(good , neutral, bad)
-  const percentage = (a, b, c) => good / sum(good, neutral, bad) * 100
-
-
-
-
-  
 
   return (
     <div>
