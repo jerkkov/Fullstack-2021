@@ -2,11 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const Course = (props) => {
-  const parts = props.course.parts
   //console.log("Props value: ", courses)
   //console.log("parts value: ", parts)
+  //console.log("total value: ", total)
+
+  const parts = props.course.parts
+  const total = parts.reduce((prev, curr) => prev + curr.exercises, 0)
+
    return (
-     
+
     <div>
       <h1>{props.course.name}</h1>
 
@@ -14,6 +18,7 @@ const Course = (props) => {
       <p key={part.id}>{part.name} {part.exercises}
       </p>)}
 
+      <b>Total of {total} exercises</b>
     </div>
     )
   }
@@ -37,6 +42,11 @@ const Course = (props) => {
           name: 'State of a component',
           exercises: 14,
           id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
         }
       ]
     }
