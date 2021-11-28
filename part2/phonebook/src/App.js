@@ -4,23 +4,32 @@ import Person from './components/Person'
 const App = () => {
   const [persons, setPersons] = useState([
     { id: 0,
-      name: 'Arto Hellas' }
+      name: 'Arto Hellas' },
   ]) 
   const [newName, setNewName] = useState(
     ''
     )
 
-  const addPerson = (event) => {
+  //Add new person
+  const addPerson = (event) => { 
+    //If person is already on the phonebook
+    if (persons.some(person => person.name === newName)){
+      event.preventDefault()
+      return alert(`${newName} is already added to notebook`)
+    }
     event.preventDefault()
     const nameObject = {
       id: persons.length + 1,
       name: newName
     }
+    
+    //update usestate
     setPersons(persons.concat(nameObject))
     setNewName('')
-    console.log('button clicked', event.target)
+    //console.log('button clicked', event.target)
     } 
   
+    //Inputfield management
   const handleNameChange = (event) => {
     //console.log(event.target.value)
     setNewName(event.target.value)
