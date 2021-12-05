@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Addperson from './components/Addperson'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
+import personService from './services/persons'
 
 const App = () => { 
   const [showAll, setShowAll] = useState('')
@@ -12,11 +12,11 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
+    personService
+    .getAll()
+    .then(initialPersons => {
     console.log('promise fulfilled')
-    setPersons(response.data)
+    setPersons(initialPersons)
     })
   }, [])
   console.log('render', persons.length, 'persons')
@@ -30,22 +30,19 @@ const App = () => {
     }
     event.preventDefault()
     const personObject = {
-      id: persons.length + 1,
       name: newName,
       number: newNumber
     }
-      //update usestate
-      setPersons(persons.concat(personObject))
+
+    personService
+    .create(personObject)
+    .then(returnedPerson => {
+      setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNumber('')
-      console.log('button clicked', event.target)
-
-    axios
-    .post('http://localhost:3001/persons', personObject)
-    .then(response => {
-      console.log(response)
     })
-    } 
+  }
+
 
     //Inputfield management for name
   const handleNameChange = (event) => {
