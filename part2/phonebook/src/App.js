@@ -21,6 +21,32 @@ const App = () => {
   }, [])
   console.log('render', persons.length, 'persons')
 
+  //Add new person
+  const newPerson = (event) => { 
+    //If person is already on the phonebook
+    if (persons.some(person => person.name === newName)){
+      event.preventDefault()
+      return alert(`${newName} is already added to notebook`)
+    }
+    event.preventDefault()
+    const personObject = {
+      id: persons.length + 1,
+      name: newName,
+      number: newNumber
+    }
+      //update usestate
+      setPersons(persons.concat(personObject))
+      setNewName('')
+      setNewNumber('')
+      console.log('button clicked', event.target)
+
+    axios
+    .post('http://localhost:3001/persons', personObject)
+    .then(response => {
+      console.log(response)
+    })
+    } 
+
     //Inputfield management for name
   const handleNameChange = (event) => {
     //console.log(event.target.value)
@@ -48,9 +74,7 @@ const App = () => {
       <Addperson persons={persons}  
                     newName={newName}
                     newNumber={newNumber}
-                    setPersons={setPersons}
-                    setNewName={setNewName}
-                    setNewNumber={setNewNumber}
+                    newPerson={newPerson}
                     handleNameChange={handleNameChange}
                     handleNumberChange={handleNumberChange} 
                     
