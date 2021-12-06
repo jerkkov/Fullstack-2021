@@ -3,6 +3,7 @@ import Addperson from './components/Addperson'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import personService from './services/persons'
+import { render } from '@testing-library/react'
 
 const App = () => { 
   const [showAll, setShowAll] = useState('')
@@ -43,6 +44,20 @@ const App = () => {
     })
   }
 
+   const personToBeRemoved = id => {
+    const person = persons.find(p => p.id === id)
+      if (window.confirm(`Delete ${person.name} ?`)) {
+      personService
+      .remove(id)
+      .then(returnedPerson => {
+        setPersons(persons.map(person => 
+          person.id !== id ? person : returnedPerson))
+      })
+    }
+  }
+
+    
+  
 
     //Inputfield management for name
   const handleNameChange = (event) => {
@@ -61,6 +76,10 @@ const App = () => {
     setShowAll(event.target.value)
   }
 
+  const filter = showAll.length < 1
+      ? persons
+      : persons.filter(person => 
+        person.name.toLowerCase().includes(showAll.toLowerCase()))
   
   return (
     <div>
@@ -69,15 +88,23 @@ const App = () => {
       
       <h2>Add a new</h2>
       <Addperson persons={persons}  
-                    newName={newName}
-                    newNumber={newNumber}
-                    newPerson={newPerson}
-                    handleNameChange={handleNameChange}
-                    handleNumberChange={handleNumberChange} 
+                  newName={newName}
+                  newNumber={newNumber}
+                  newPerson={newPerson}
+                  handleNameChange={handleNameChange}
+                  handleNumberChange={handleNumberChange} 
                     
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} showAll={showAll} />
+      <div>
+            {filter.map((person, i) =>
+                <Persons 
+                key={i}
+                person={person}
+                removePerson={() => personToBeRemoved(person.id)} 
+                />
+            )}
+        </div>
     </div>
   )
 }
