@@ -3,7 +3,6 @@ import Addperson from './components/Addperson'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import personService from './services/persons'
-import { render } from '@testing-library/react'
 
 const App = () => { 
   const [showAll, setShowAll] = useState('')
@@ -12,24 +11,35 @@ const App = () => {
   const [persons, setPersons] = useState([])
 
   useEffect(() => {
-    console.log('effect')
+    //console.log('effect')
     personService
     .getAll()
     .then(initialPersons => {
-    console.log('promise fulfilled')
+    //console.log('promise fulfilled')
     setPersons(initialPersons)
     })
   }, [])
-  console.log('render', persons.length, 'persons')
+  //console.log('render', persons.length, 'persons')
 
   //Add new person
-  const newPerson = (event) => { 
-    //If person is already on the phonebook
+  const personManagement = (event) => { 
+    //Change number of the existing person 
     if (persons.some(person => person.name === newName)){
       event.preventDefault()
-      return alert(`${newName} is already added to notebook`)
+     if(window.confirm(`${newName} is already added to notebook, replace the old number with a new one?`)) {
+      const personInvolved = persons.find(person => person.name === newName)
+      return updateNumber(personInvolved.id)
+     }
+     else
+     return console.log('Clicked cancel')
     }
+    //Add new person to the server
     event.preventDefault()
+    addPerson()
+    
+  }
+
+  const addPerson = () => {
     const personObject = {
       name: newName,
       number: newNumber
@@ -43,6 +53,18 @@ const App = () => {
       setNewNumber('')
     })
   }
+  const updateNumber = (id) => {
+    const number = persons.find (n => n.id === id)
+    const changedNumber = { ...number, number: newNumber}
+
+    personService
+    .update(id, changedNumber)
+    .then(returnedPerson => {
+      setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+    })
+    setNewName('')
+    setNewNumber('')
+  }
 
    const personToBeRemoved = id => {
     const person = persons.find(p => p.id === id)
@@ -53,8 +75,15 @@ const App = () => {
         setPersons(persons.map(person => 
           person.id !== id ? person : returnedPerson))
       })
+      .catch(error => {
+        alert(
+          `The person was already deleted from the server`
+        )
+      })
     }
   }
+
+
 
     
   
@@ -90,7 +119,7 @@ const App = () => {
       <Addperson persons={persons}  
                   newName={newName}
                   newNumber={newNumber}
-                  newPerson={newPerson}
+                  personManagement={personManagement}
                   handleNameChange={handleNameChange}
                   handleNumberChange={handleNumberChange} 
                     

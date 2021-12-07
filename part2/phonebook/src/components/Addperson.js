@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Addperson = ( {newPerson,
+const Addperson = ( {personManagement,
                     newName, 
                     newNumber,
                     handleNameChange,
@@ -9,7 +9,7 @@ const Addperson = ( {newPerson,
 
     return (
         <div>
-        <form onSubmit={newPerson}>
+        <form onSubmit={personManagement}>
         <div>
           name: <input  
             value={newName}
