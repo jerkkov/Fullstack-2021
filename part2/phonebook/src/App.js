@@ -3,12 +3,16 @@ import Addperson from './components/Addperson'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import personService from './services/persons'
+import Notification from './components/Notification'
+import Error from './components/Error'
 
 const App = () => { 
   const [showAll, setShowAll] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [persons, setPersons] = useState([])
+  const [notificationMessage, setNotificationMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     //console.log('effect')
@@ -36,7 +40,7 @@ const App = () => {
     //Add new person to the server
     event.preventDefault()
     addPerson()
-    
+
   }
 
   const addPerson = () => {
@@ -49,36 +53,64 @@ const App = () => {
     .create(personObject)
     .then(returnedPerson => {
       setPersons(persons.concat(returnedPerson))
+      
+      setNotificationMessage(
+        `Added ${newName}`
+      )
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 2000);
+
       setNewName('')
       setNewNumber('')
     })
   }
+
   const updateNumber = (id) => {
-    const number = persons.find (n => n.id === id)
-    const changedNumber = { ...number, number: newNumber}
+    const personInvolved = persons.find (n => n.id === id)
+    const changedNumber = { ...personInvolved, number: newNumber}
 
     personService
     .update(id, changedNumber)
     .then(returnedPerson => {
       setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
     })
+
+    setNotificationMessage(
+      `${personInvolved.name} number modified`
+    )
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 2000);
+
     setNewName('')
     setNewNumber('')
   }
 
    const personToBeRemoved = id => {
-    const person = persons.find(p => p.id === id)
-      if (window.confirm(`Delete ${person.name} ?`)) {
+    const personInvolved = persons.find(p => p.id === id)
+      if (window.confirm(`Delete ${personInvolved.name} ?`)) {
       personService
       .remove(id)
       .then(returnedPerson => {
         setPersons(persons.map(person => 
           person.id !== id ? person : returnedPerson))
+          
+          setNotificationMessage(
+            `Removed ${personInvolved.name}`
+          )
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 2000);
       })
       .catch(error => {
-        alert(
-          `The person was already deleted from the server`
+        setErrorMessage(
+          'This person is not saved to the server'
         )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 2000);
+        console.log(error)
       })
     }
   }
@@ -113,6 +145,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
+      <Error message={errorMessage} />
       <Filter handleFindChange={handleFindChange} />
       
       <h2>Add a new</h2>
