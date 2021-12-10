@@ -48,18 +48,16 @@ let persons = [
 })
 
 const generateId = () => {
-  const maxId = persons.length > 0
-  ? Math.max(...persons.map(n => n.id))
-  : 0
-  return maxId + 1
+  const rndId = Math.floor(Math.random() * 100000)
+  return rndId
 }
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
-
-  if(!body.name) {
+  const redundantName = persons.find(person => person.name === body.name)
+  if(!body.name || !body.number || redundantName) {
     return response.status(400).json({
-      error: 'content missing'
+      error: redundantName ? 'name must be unique' : 'content missing'
     })
   }
 
