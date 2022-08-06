@@ -19,11 +19,19 @@ app.get('/api/blogs', (request, response) => {
   Blog
     .find({})
     .then(blogs => {
-      response.json(blogs)
-    })
+      if (blogs) {
+        response.json(blogs)
+      }
+      else {
+        response.status(404).end()
+      }
+      
+    }).catch(error => console.log(error))
 })
 
 app.post('/api/blogs', (request, response) => {
+  const body = request.body
+
   const blog = new Blog({
     title: body.title,
     author: body.author,
