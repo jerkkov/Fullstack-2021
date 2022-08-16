@@ -1,5 +1,5 @@
 const listHelper = require('../utils/list_helper')
-const sample = require('./sampleBlogs')
+const sample = require('../utils/sampleBlogs')
 
 test('dummy returns one', () => {
   const blogs = []
@@ -40,4 +40,6 @@ describe('total likes', () => {
       })
     })
   })
+
+  
 
