@@ -58,6 +58,18 @@ describe('when there is initially some blogs saved', () => {
         expect(addedBlog).toBeDefined();
         expect(addedBlog.likes).toBe(0);
     })
+
+    test('a blog without empty url and title is rejected', async () => {
+        const newBlog = {
+            author: "Edsger W. Dijkstra",
+            likes: 3,
+        }
+
+        await api 
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+    })
 })
 afterAll(() => {
     mongoose.connection.close()
