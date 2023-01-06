@@ -1,6 +1,6 @@
 const mongoose = require ('mongoose')
 const supertest = require ('supertest')
-const helper = require('../utils/sampleBlogs')
+const helper = require('../utils/blogHelper')
 const app = require('../app')
 const api = supertest(app)
 
@@ -27,14 +27,7 @@ describe('when there is initially some blogs saved', () => {
     })
 
     test('a valid blog can be added', async () => {
-        const newBlog = {
-            id: "5a422b891b54a676234d34ds",
-            title: "Second class tests",
-            author: "Robert C. Martin",
-            url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html",
-            likes: 10,
-        }
-
+        const newBlog = {...helper.blogs[0], title: 'New hit book'}
         await api 
         .post('/api/blogs')
         .send(newBlog)
@@ -47,6 +40,23 @@ describe('when there is initially some blogs saved', () => {
 
         expect(response.body).toHaveLength(helper.blogs.length + 1)
         expect(contents).toContain('Second class tests')
+    })
+
+    test('default value of likes is 0', async () => {
+        const newBlog = {
+            title: "Go To Statement Considered Harmful",
+            author: "Edsger W. Dijkstra",
+            url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+        }
+
+        await api 
+        .post('/api/blogs')
+        .send(newBlog)
+
+        const response = await api.get('/api/blogs')
+        const addedBlog = response.body[response.body.length -1]
+        expect(addedBlog).toBeDefined();
+        expect(addedBlog.likes).toBe(0);
     })
 })
 afterAll(() => {

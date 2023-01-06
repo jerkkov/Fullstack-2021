@@ -1,3 +1,5 @@
+const Blog = require('../models/blog')
+
 const blogs = [
     {
       title: "React patterns",
@@ -36,6 +38,30 @@ const blogs = [
       likes: 2,
     }  
   ]
+
+  const newBlog = {
+    id: "5a422b891b54a676234d34ds",
+    title: "Second class tests",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html",
+    likes: 10,
+  }
+
+  const nonExistingId = async () => {
+    const blog = new Blog({ title: 'willremovethissoon', author: 'some', url: 'some-url', likes: 0, })
+    await blog.save()
+    await blog.remove()
+  
+    return blog.id.toString()
+  }
+  
+  const blogsInDB = async () => {
+    const blog = await Blog.find({})
+    return blog.map(blog => blog.toJSON())
+  }
   module.exports = {
-    blogs
+    blogs,
+    newBlog,
+    nonExistingId,
+    blogsInDB
   }
