@@ -8,11 +8,10 @@ const totalLikes = (blogPost) => {
         (total, currBlog) => 
         total + currBlog.likes, 0)
 }
-
 const favoriteBlog = (blogs) => {
-  const mostLikes = Math.max(...blogs.map(blogPost => blogPost.likes))
-  const favoriteBlog = blogs.filter(blogPost => blogPost.likes === mostLikes)
-  return favoriteBlog[0]
+  const mostLikes = Math.max(...blogs.map(blog => blog.likes))
+  const favoriteBlog = blogs.find(blog => blog.likes >= mostLikes)
+  return favoriteBlog
 
 }
 
