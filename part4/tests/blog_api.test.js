@@ -71,6 +71,22 @@ describe('when there is initially some blogs saved', () => {
         .send(newBlog)
         .expect(400)
     })
+    
+})
+
+describe('when blog is deleted', () => {
+    beforeEach(async () => {
+        await Blog.deleteMany({})
+        await Blog.insertMany(helper.blogs)
+    }, 100000)
+
+    test('check whether a blog is deleted', async () => {
+        const response = await api.get('/api/blogs')
+
+        const blogToBeDeleted = response.body[0]
+        const test = await api.delete(`/api/blogs/${blogToBeDeleted.id}`)
+        .expect(204)
+    })
 })
 afterAll(() => {
     mongoose.connection.close()
