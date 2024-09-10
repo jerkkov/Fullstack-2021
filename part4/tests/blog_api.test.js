@@ -39,7 +39,8 @@ describe('when there is initially some blogs saved', () => {
         const contents = response.body.map(r => r.title)
 
         expect(response.body).toHaveLength(helper.blogs.length + 1)
-        expect(contents).toContain('Second class tests')
+        expect(contents).toContain('New hit book')
+
     })
 
     test('default value of likes is 0', async () => {
