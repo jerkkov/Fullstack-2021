@@ -88,6 +88,29 @@ describe('when blog is deleted', () => {
         .expect(204)
     })
 })
+
+describe('when blog is edited', () => {
+    beforeEach(async () => {
+        await Blog.deleteMany({})
+        await Blog.insertMany(helper.blogs)
+    }, 100000)
+
+    test('check whether a blog is edited', async () => {
+        const response = await api.get('/api/blogs')
+
+        const blogTobeEdited = response.body[0]
+        const editedBlog = {...blogTobeEdited, title: 'New title is awesome'}
+        await api.put(`/api/blogs/${editedBlog.id}`)
+        .send(editedBlog)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+        const blogs = await api.get('/api/blogs')
+        const returnedEditedBlog = blogs.body.find(blog => editedBlog.id === blog.id)
+        expect(returnedEditedBlog).toEqual(editedBlog)
+
+    })
+})
 afterAll(() => {
     mongoose.connection.close()
 })
