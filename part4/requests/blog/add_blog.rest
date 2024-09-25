@@ -1,8 +1,9 @@
-POST http://localhost:3001/api/blogs
+POST http://localhost:3001/api/blogs/
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmthIiwiaWQiOiI2NmYyZWY3M2MzMDNmNWQ4ZGQ0YTUxMGYiLCJpYXQiOjE3MjcyODUyNjksImV4cCI6MTcyNzI4ODg2OX0.KIn_-BX1upBCEpGlZ9tO0j0RBWj-cQUFC4dbqQE5GQ0
 
 {
-      "title": "Rankan sivy",
+      "title": "Rankan blog",
       "author": "Tyhnu Rankha",
       "url": "tuhnunsivu.fi",
       "likes": 5
