@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs/
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmthIiwiaWQiOiI2NmYyZWY3M2MzMDNmNWQ4ZGQ0YTUxMGYiLCJpYXQiOjE3MjcyODUyNjksImV4cCI6MTcyNzI4ODg2OX0.KIn_-BX1upBCEpGlZ9tO0j0RBWj-cQUFC4dbqQE5GQ0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJhbmthIiwiaWQiOiI2NmYyZWY3M2MzMDNmNWQ4ZGQ0YTUxMGYiLCJpYXQiOjE3MjgyODYyNDcsImV4cCI6MTcyODI4OTg0N30.XBuslhfuIrzL8UPTJunvyiuj6QvSczkbNPX86_sp_xg
 
 {
-      "title": "Rankan blog",
-      "author": "Tyhnu Rankha",
+      "title": "Rankan uus blogi",
+      "author": "Tyhnu töhn",
       "url": "tuhnunsivu.fi",
       "likes": 5
 }
