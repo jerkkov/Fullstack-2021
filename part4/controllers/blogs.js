@@ -10,10 +10,8 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  console.log("request",request)
   const body = request.body
 
-  console.log("token", request.token)
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
@@ -50,9 +48,22 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
-})
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+  const blogId = request.path.split('/')[1]
 
+  const blog = await Blog.findById(blogId)
+
+  if (blog.user.toString() === user.id.toString()) {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  }
+  else {
+    return response.status(401).json({ error: 'user is not owner of the blog' })
+  }
+})
 
   module.exports = blogsRouter
