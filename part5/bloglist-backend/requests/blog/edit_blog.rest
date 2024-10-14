@@ -1,0 +1,9 @@
+PUT http://localhost:3001/api/blogs/66e0220b8770f6a5c27ad578
+Content-Type: application/json
+
+{
+      "title": "Rankan uus krija",
+      "author": "Tyhnu Rankha",
+      "url": "tuhnunsivu.fi",
+      "likes": 5
+}

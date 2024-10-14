@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/blogs/
+Content-Type: application/json
+Authorization: Bearer <token>
+
+
+{
+      "title": "Rankan uus blogi test",
+      "author": "Tyhnu töhn",
+      "url": "tuhnunsivu.fi",
+      "likes": 5
+}
