@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import '../index.css'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -11,10 +12,10 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({})
 
-  const [title, setTitle] = useState(null)
-  const [author, setAuthor] = useState(null)
-  const [url, setUrl] = useState(null)
-  const [likes, setLikes] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+  const [likes, setLikes] = useState('')
 
 
   useEffect(() => {
@@ -71,23 +72,28 @@ const App = () => {
   } 
 
   const handleSaveBlog  = async (event) => {
+    event.preventDefault()
     try {
       const newBlog = await blogService.create({
         title, author, url, likes
     })
       console.log("blog", title, author, url, likes)
       blogService.setToken(user.token)
+      setNotification({type:'notification', message:`Created new blog ${title}`})
+      setBlogs([...blogs, newBlog])
+      setTimeout(() => {
+        setNotification({type:'notification', message:null})
+      }, 5000)
       setTitle('')
       setAuthor('')
       setUrl('')
       setLikes('')
     } catch (exception) {
-      setNotification({type:'error', message:'Wrong credentials'})
+      setNotification({type:'error', message:'Oops'})
       setTimeout(() => {
         setNotification({type:'error', message:null})
       }, 5000)
     }
-    console.log(`logging in with ${user}`)
   } 
 
   const loginForm = () => (
