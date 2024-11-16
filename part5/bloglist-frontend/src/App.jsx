@@ -4,6 +4,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,10 +13,10 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({})
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-  const [likes, setLikes] = useState('')
+  // const [title, setTitle] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [url, setUrl] = useState('')
+  // const [likes, setLikes] = useState('')
 
 
   useEffect(() => {
@@ -96,99 +97,44 @@ const App = () => {
     }
   } 
 
-  const loginForm = () => (
-    <div>
-    <h3>Login</h3>
-    <form onSubmit={handleLogin}>
-      <section>
-        <label>
-          Username
-          <div>
-        <input
-        type="text"
-        value={username}
-        name="username"
-        id="username"
-        onChange={({ target }) => setUsername(target.value)}
-        />
-        </div>
-      </label>
+  // const loginForm = () => (
+  //   <div>
+  //   <h3>Login</h3>
+  //   <form onSubmit={handleLogin}>
+  //     <section>
+  //       <label>
+  //         Username
+  //         <div>
+  //       <input
+  //       type="text"
+  //       value={username}
+  //       name="username"
+  //       id="username"
+  //       onChange={({ target }) => setUsername(target.value)}
+  //       />
+  //       </div>
+  //     </label>
 
-      <label>Password  
-        <div>
-        <input
-        type="password"
-        value={password}
-        name="password"
-        id="password"
-        onChange={({ target }) => setPassword(target.value)}
-        />
-        </div>
-      </label>
-        <button type="submit">Login</button>
-      </section>
-    </form>    
-    </div>  
-  )
+  //     <label>Password  
+  //       <div>
+  //       <input
+  //       type="password"
+  //       value={password}
+  //       name="password"
+  //       id="password"
+  //       onChange={({ target }) => setPassword(target.value)}
+  //       />
+  //       </div>
+  //     </label>
+  //       <button type="submit">Login</button>
+  //     </section>
+  //   </form>    
+  //   </div>  
+  // )
 
-  const saveBlogForm = () => (
-    <div>
-    <h3>Create New</h3>
-    <form onSubmit={handleSaveBlog}>
-      <section>
-        <label>
-          Title
-            <div>
-            <input
-            type="text"
-            value={title}
-            name="title"
-            id="title"
-            onChange={({ target }) => setTitle(target.value)}
-            />
-          </div>
-        </label>
-        <label>
-            Author  
-            <div>
-              <input
-              type="text"
-              value={author}
-              name="author"
-              id="author"
-              onChange={({ target }) => setAuthor(target.value)}
-              />
-            </div>
-          </label>
-          <label>
-            URL  
-            <div>
-              <input
-              type="text"
-              value={url}
-              name="url"
-              id="url"
-              onChange={({ target }) => setUrl(target.value)}
-              />
-            </div>
-        </label>
-        <label>
-            Likes  
-            <div>
-              <input
-              type="number"
-              value={likes}
-              name="likes"
-              id="likes"
-              onChange={({ target }) => setLikes(target.value)}
-              />
-            </div>
-        </label>
-        <button type="submit">Create</button>
-      </section>
-    </form>    
-    </div>  
-  )
+  // const saveBlogForm = () => (
+   
+  // )
 
   const blogForm = () => (
     <div>
@@ -208,8 +154,15 @@ const App = () => {
         </thead>
       </table>
       {user && blogForm()}
-      {user && saveBlogForm()}
-      {!user && loginForm()}
+      {/* {user && saveBlogForm()} */}
+      {
+      !user && <LoginForm 
+        username={username} 
+        password={password} 
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleSubmit={handleLogin} />
+      }
       <Notification type={notification.type && notification.type} message={notification.message && notification.message} />
 
     </>
