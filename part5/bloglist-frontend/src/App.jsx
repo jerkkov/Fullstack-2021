@@ -5,6 +5,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
+import NewBlogForm from './components/NewBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,10 +14,10 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({})
 
-  // const [title, setTitle] = useState('')
-  // const [author, setAuthor] = useState('')
-  // const [url, setUrl] = useState('')
-  // const [likes, setLikes] = useState('')
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+  const [likes, setLikes] = useState('')
 
 
   useEffect(() => {
@@ -154,15 +155,22 @@ const App = () => {
         </thead>
       </table>
       {user && blogForm()}
-      {/* {user && saveBlogForm()} */}
-      {
-      !user && <LoginForm 
+      {user && <NewBlogForm 
+        handleSubmit={handleSaveBlog}
+        handleTitleChange={({ target }) => setTitle(target.value)}
+        handleAuthorChange={({ target }) => setAuthor(target.value)}
+        handleUrlChange={({ target }) => setUrl(target.value)}
+        handleLikesChange={({ target }) => setLikes(target.value)}
+        title={title}
+        author={author}
+        url={url}
+        likes={likes} />}
+      {!user && <LoginForm 
         username={username} 
         password={password} 
         handleUsernameChange={({ target }) => setUsername(target.value)}
         handlePasswordChange={({ target }) => setPassword(target.value)}
-        handleSubmit={handleLogin} />
-      }
+        handleSubmit={handleLogin} />}
       <Notification type={notification.type && notification.type} message={notification.message && notification.message} />
 
     </>

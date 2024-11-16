@@ -1,11 +1,27 @@
 import React from "react";
 
-const NewBlogForm = ({  }) => {
+const NewBlogForm = ({ 
+  handleSubmit,
+  handleTitleChange,
+  handleAuthorChange,
+  handleUrlChange,
+  handleLikesChange,
+  title,
+  author,
+  url,
+  likes
+}) => {
+  // const [toggleNewBlogForm, setToggleNewBlogForm] = useState(false)
+  // const [handleSubmitNewBlogForm, setHandleSubmitNewBlogForm] = useState()
+  // const [title, setTitle] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [url, setUrl] = useState('')
+  // const [likes, setLikes] = useState('')
 
     return (
         <>
         <h3>Create New</h3>
-        <form onSubmit={handleSaveBlog}>
+        <form onSubmit={handleSubmit}>
           <section>
             <label>
               Title
@@ -15,7 +31,7 @@ const NewBlogForm = ({  }) => {
                 value={title}
                 name="title"
                 id="title"
-                onChange={({ target }) => setTitle(target.value)}
+                onChange={handleTitleChange}
                 />
               </div>
             </label>
@@ -27,7 +43,7 @@ const NewBlogForm = ({  }) => {
                   value={author}
                   name="author"
                   id="author"
-                  onChange={({ target }) => setAuthor(target.value)}
+                  onChange={handleAuthorChange}
                   />
                 </div>
               </label>
@@ -39,7 +55,7 @@ const NewBlogForm = ({  }) => {
                   value={url}
                   name="url"
                   id="url"
-                  onChange={({ target }) => setUrl(target.value)}
+                  onChange={handleUrlChange}
                   />
                 </div>
             </label>
@@ -51,7 +67,7 @@ const NewBlogForm = ({  }) => {
                   value={likes}
                   name="likes"
                   id="likes"
-                  onChange={({ target }) => setLikes(target.value)}
+                  onChange={handleLikesChange}
                   />
                 </div>
             </label>
@@ -61,3 +77,5 @@ const NewBlogForm = ({  }) => {
         </>  
     )
 }
+
+export default NewBlogForm
