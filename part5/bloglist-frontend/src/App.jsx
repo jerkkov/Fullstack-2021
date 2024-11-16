@@ -14,12 +14,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({})
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-  const [likes, setLikes] = useState('')
-
-
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -65,7 +59,7 @@ const App = () => {
       window.localStorage.removeItem('loggedBlogAppUser')
       setUser(null)
     } catch (exception) {
-      setNotification({type:'error', message:'Ooops'})
+      setNotification({type:'error', message:exception})
       setTimeout(() => {
         setNotification({type:'error', message:null})
       }, 5000)
@@ -73,69 +67,25 @@ const App = () => {
     console.log(`logged out`)
   } 
 
-  const handleSaveBlog  = async (event) => {
-    event.preventDefault()
+  const addBlog = (blogObject) => {
     try {
-      const newBlog = await blogService.create({
-        title, author, url, likes
-    })
-      console.log("blog", title, author, url, likes)
-      blogService.setToken(user.token)
+      blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs([...blogs, returnedBlog])
+      })
       setNotification({type:'notification', message:`Created new blog ${title}`})
-      setBlogs([...blogs, newBlog])
       setTimeout(() => {
         setNotification({type:'notification', message:null})
       }, 5000)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      setLikes('')
     } catch (exception) {
-      setNotification({type:'error', message:'Oops'})
+      setNotification({type:'error', message:exception})
       setTimeout(() => {
         setNotification({type:'error', message:null})
       }, 5000)
     }
-  } 
 
-  // const loginForm = () => (
-  //   <div>
-  //   <h3>Login</h3>
-  //   <form onSubmit={handleLogin}>
-  //     <section>
-  //       <label>
-  //         Username
-  //         <div>
-  //       <input
-  //       type="text"
-  //       value={username}
-  //       name="username"
-  //       id="username"
-  //       onChange={({ target }) => setUsername(target.value)}
-  //       />
-  //       </div>
-  //     </label>
-
-  //     <label>Password  
-  //       <div>
-  //       <input
-  //       type="password"
-  //       value={password}
-  //       name="password"
-  //       id="password"
-  //       onChange={({ target }) => setPassword(target.value)}
-  //       />
-  //       </div>
-  //     </label>
-  //       <button type="submit">Login</button>
-  //     </section>
-  //   </form>    
-  //   </div>  
-  // )
-
-  // const saveBlogForm = () => (
-   
-  // )
+  }
 
   const blogForm = () => (
     <div>
@@ -156,15 +106,15 @@ const App = () => {
       </table>
       {user && blogForm()}
       {user && <NewBlogForm 
-        handleSubmit={handleSaveBlog}
-        handleTitleChange={({ target }) => setTitle(target.value)}
-        handleAuthorChange={({ target }) => setAuthor(target.value)}
-        handleUrlChange={({ target }) => setUrl(target.value)}
-        handleLikesChange={({ target }) => setLikes(target.value)}
-        title={title}
-        author={author}
-        url={url}
-        likes={likes} />}
+        // handleSubmit={handleSaveBlog}
+        // handleTitleChange={({ target }) => setTitle(target.value)}
+        // handleAuthorChange={({ target }) => setAuthor(target.value)}
+        // handleUrlChange={({ target }) => setUrl(target.value)}
+        // handleLikesChange={({ target }) => setLikes(target.value)}
+        // title={title}
+        // author={author}
+        // url={url}
+        createBlog={addBlog} />}
       {!user && <LoginForm 
         username={username} 
         password={password} 

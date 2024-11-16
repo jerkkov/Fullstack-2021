@@ -1,27 +1,39 @@
 import React from "react";
+import { useState } from "react";
 
 const NewBlogForm = ({ 
-  handleSubmit,
-  handleTitleChange,
-  handleAuthorChange,
-  handleUrlChange,
-  handleLikesChange,
-  title,
-  author,
-  url,
-  likes
+  createBlog,
+  // handleTitleChange,
+  // handleAuthorChange,
+  // handleUrlChange,
+  // handleLikesChange,
+  // title,
+  // author,
+  // url,
+  // likes
 }) => {
-  // const [toggleNewBlogForm, setToggleNewBlogForm] = useState(false)
-  // const [handleSubmitNewBlogForm, setHandleSubmitNewBlogForm] = useState()
-  // const [title, setTitle] = useState('')
-  // const [author, setAuthor] = useState('')
-  // const [url, setUrl] = useState('')
-  // const [likes, setLikes] = useState('')
+    const [title, setTitle] = useState('')
+    const [author, setAuthor] = useState('')
+    const [url, setUrl] = useState('')
+    const [likes, setLikes] = useState('')
 
+    const addBlog = (event) => {
+      event.preventDefault()
+      createBlog({
+        title: title,
+        author, author,
+        url: url,
+        likes: likes
+      })
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      setLikes('')
+    }
     return (
         <>
         <h3>Create New</h3>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={addBlog}>
           <section>
             <label>
               Title
@@ -31,7 +43,7 @@ const NewBlogForm = ({
                 value={title}
                 name="title"
                 id="title"
-                onChange={handleTitleChange}
+                onChange={event => setTitle(event.target.value)}
                 />
               </div>
             </label>
@@ -43,7 +55,7 @@ const NewBlogForm = ({
                   value={author}
                   name="author"
                   id="author"
-                  onChange={handleAuthorChange}
+                  onChange={event => setAuthor(event.target.value)}
                   />
                 </div>
               </label>
@@ -55,7 +67,7 @@ const NewBlogForm = ({
                   value={url}
                   name="url"
                   id="url"
-                  onChange={handleUrlChange}
+                  onChange={event => setUrl(event.target.value)}
                   />
                 </div>
             </label>
@@ -67,7 +79,7 @@ const NewBlogForm = ({
                   value={likes}
                   name="likes"
                   id="likes"
-                  onChange={handleLikesChange}
+                  onChange={event => setLikes(event.target.value)}
                   />
                 </div>
             </label>
