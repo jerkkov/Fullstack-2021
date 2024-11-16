@@ -6,6 +6,7 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -100,21 +101,14 @@ const App = () => {
       <table>
         <thead>
           <tr>
-        <td><h1>Blogs</h1></td><td><button onClick={handleLogout}>Logout</button></td>
-        </tr>
+            <td><h1>Blogs</h1></td><td><button onClick={handleLogout}>Logout</button></td>
+          </tr>
         </thead>
       </table>
       {user && blogForm()}
-      {user && <NewBlogForm 
-        // handleSubmit={handleSaveBlog}
-        // handleTitleChange={({ target }) => setTitle(target.value)}
-        // handleAuthorChange={({ target }) => setAuthor(target.value)}
-        // handleUrlChange={({ target }) => setUrl(target.value)}
-        // handleLikesChange={({ target }) => setLikes(target.value)}
-        // title={title}
-        // author={author}
-        // url={url}
-        createBlog={addBlog} />}
+      <Togglable buttonLabel="New blog">
+      {user && <NewBlogForm createBlog={addBlog} />}
+      </Togglable>
       {!user && <LoginForm 
         username={username} 
         password={password} 
