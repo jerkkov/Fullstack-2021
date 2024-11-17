@@ -3,14 +3,6 @@ import { useState } from "react";
 
 const NewBlogForm = ({ 
   createBlog,
-  // handleTitleChange,
-  // handleAuthorChange,
-  // handleUrlChange,
-  // handleLikesChange,
-  // title,
-  // author,
-  // url,
-  // likes
 }) => {
     const [title, setTitle] = useState('')
     const [author, setAuthor] = useState('')
@@ -21,7 +13,7 @@ const NewBlogForm = ({
       event.preventDefault()
       createBlog({
         title: title,
-        author, author,
+        author: author,
         url: url,
         likes: likes
       })
