@@ -1,9 +1,10 @@
-PUT http://localhost:3001/api/blogs/66e0220b8770f6a5c27ad578
+PUT http://localhost:3003/api/blogs/66f44650ddbde3c8caae2099
 Content-Type: application/json
+Authorization: Bearer eyJ1c2VybmFtZSI6IlJhbmthIiwiaWQiOiI2NmYyZWY3M2MzMDNmNWQ4ZGQ0YTUxMGYiLCJpYXQiOjE3MzE3NTE4NTEsImV4cCI6MTczMTc1NTQ1MX0.AlAGM8bk209HkeJYo8viRPXDOGal0SdqJXIlHvmrvmY
 
 {
-      "title": "Rankan uus krija",
+      "title": "Rankan uus kirja",
       "author": "Tyhnu Rankha",
       "url": "tuhnunsivu.fi",
-      "likes": 5
+      "likes": 3
 }

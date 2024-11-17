@@ -9,7 +9,7 @@ const togglableBlogInformation = () => (
       <td>{blog.url}</td>
     </tr>
     <tr>
-      <td>{`likes:${blog.likes}`}</td>
+      <td>{`likes:${blog.likes}`}</td><td><button>Like</button></td>
     </tr>
   </>
 )

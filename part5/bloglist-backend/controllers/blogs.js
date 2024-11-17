@@ -31,14 +31,19 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
-// blogsRouter.put('/:id', async (request, response) => {
-//   const {title, author, url, likes} = request.body 
-//   const blog = await Blog.findByIdAndUpdate(
-//     request.params.id,
-//     {title, author, url, likes}, {new: true}
-//   )
-//   response.json(blog)
-// })
+blogsRouter.put('/:id', async (request, response) => {
+  const body = request.body
+
+  const blog = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes
+  }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  response.json(updatedBlog)
+})
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 
