@@ -1,15 +1,35 @@
-import { useState, } from 'react'
+import { useState, useEffect } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ editBlog, blog }) => {
 
 const [visible, setVisible] = useState(false)
+const [blogPoster, setBlogPoster] = useState(false)
+
+useEffect(() => {
+  setBlogPoster(blog.user ? blog.user : "")
+}, [])  
+
+const addLike = (event) => {
+  event.preventDefault()
+  const updatedLikes = blog.likes + 1
+  editBlog(blog.id,{
+    title: blog.title,
+    author: blog.author,
+    url: blog.url,
+    likes: updatedLikes
+  })
+}
+
 const togglableBlogInformation = () => (
   <>
     <tr>
       <td>{blog.url}</td>
     </tr>
     <tr>
-      <td>{`likes:${blog.likes}`}</td><td><button>Like</button></td>
+      <td>{`likes:${blog.likes}`}</td><td><form onSubmit={addLike}><button type='submit'>Like</button></form></td>
+    </tr>
+    <tr>
+      <td>{`Added by: ${blogPoster.username}`}</td>
     </tr>
   </>
 )

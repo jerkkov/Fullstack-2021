@@ -83,18 +83,37 @@ const App = () => {
         setNotification({type:'notification', message:null})
       }, 5000)
     } catch (exception) {
-      setNotification({type:'error', message:exception})
+      setNotification({type:'error', message:`Blog creation failed: ${exception}`})
       setTimeout(() => {
         setNotification({type:'error', message:null})
       }, 5000)
     }
+  }
 
+  const editBlog = (id, blogObject) => {
+    try {
+      blogService
+      .update(id, blogObject)
+      .then(returnedBlog => {
+        const filteredBlogs = blogs.filter(blogArr => blogArr.id !== id)
+        setBlogs([...filteredBlogs, returnedBlog])
+      })
+      setNotification({type:'notification', message:"Blog updated"})
+      setTimeout(() => {
+        setNotification({type:'notification', message:null})
+      }, 5000)
+    } catch (exception) {
+      setNotification({type:'error', message:`Blog failed to update: ${exception}`})
+      setTimeout(() => {
+        setNotification({type:'error', message:null})
+      }, 5000)
+    }
   }
 
   const blogForm = () => (
     <div>
     {blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} />
+      <Blog key={blog.id} editBlog={editBlog} blog={blog} />
     )}
     </div>
   )
