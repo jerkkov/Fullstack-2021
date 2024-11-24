@@ -95,9 +95,16 @@ const App = () => {
       blogService
       .update(id, blogObject)
       .then(returnedBlog => {
-        const filteredBlogs = blogs.filter(blogArr => blogArr.id !== id)
-        setBlogs([...filteredBlogs, returnedBlog])
-      })
+        const editedBlogs = blogs.map((blog) => {
+        return  blog.id === returnedBlog.id ?
+             returnedBlog : blog
+        })
+        setBlogs(editedBlogs)
+
+      //FOR DELETE   const filteredBlogs = blogs.filter(blogArr => blogArr.id !== id)
+      //   setBlogs([...filteredBlogs, returnedBlog])
+       })
+
       setNotification({type:'notification', message:"Blog updated"})
       setTimeout(() => {
         setNotification({type:'notification', message:null})
