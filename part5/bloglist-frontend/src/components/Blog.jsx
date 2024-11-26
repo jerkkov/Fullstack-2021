@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const Blog = ({ editBlog, blog }) => {
+const Blog = ({ editBlog, deleteBlog, blog }) => {
 
 const [visible, setVisible] = useState(false)
 const [blogPoster, setBlogPoster] = useState(false)
@@ -19,6 +19,10 @@ const addLike = () => {
   })
 }
 
+const confirmDelete = () => {
+  window.confirm(`Do you really want to delete ${blog.title}`) ? deleteBlog(blog.id) : ""
+}
+
 const togglableBlogInformation = () => (
   <>
     <tr>
@@ -33,10 +37,18 @@ const togglableBlogInformation = () => (
     <tr>
       <td>{`Added by: ${blogPoster.username}`}</td>
     </tr>
+    <tr>
+      <td>{`Added by: ${blogPoster.username}`}</td>
+    </tr>
+    <tr>
+      <td>
+        <button onClick={() => confirmDelete()} style={{backgroundColor:'transparent'}}>Delete</button>
+      </td>
+    </tr>
   </>
 )
   return (
-  <div>
+  <div style={{borderBottom:'solid 1px grey', paddingBottom:4}}>
     <table>
       <thead>
         <tr>

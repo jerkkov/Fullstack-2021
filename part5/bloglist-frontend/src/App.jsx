@@ -100,11 +100,7 @@ const App = () => {
              returnedBlog : blog
         })
         setBlogs(editedBlogs)
-
-      //FOR DELETE   const filteredBlogs = blogs.filter(blogArr => blogArr.id !== id)
-      //   setBlogs([...filteredBlogs, returnedBlog])
        })
-
       setNotification({type:'notification', message:"Blog updated"})
       setTimeout(() => {
         setNotification({type:'notification', message:null})
@@ -117,10 +113,28 @@ const App = () => {
     }
   }
 
+  const deleteBlog = (id) => {
+    try {
+      blogService.remove(id)
+      const blogsWithoutDeleted = blogs.filter(blog => blog.id !== id)
+        setBlogs(blogsWithoutDeleted)
+      setNotification({type:'notification', message:"Blog deleted"})
+      setTimeout(() => {
+        setNotification({type:'notification', message:null})
+      }, 5000)
+    } catch (exception) {
+      setNotification({type:'error', message:`Blog failed to delete: ${exception}`})
+      setTimeout(() => {
+        setNotification({type:'error', message:null})
+      }, 5000)
+    }
+  }
+
+
   const blogForm = () => (
     <div>
     {blogs.map(blog =>
-      <Blog key={blog.id} editBlog={editBlog} blog={blog} />
+      <Blog key={blog.id} editBlog={editBlog} deleteBlog={deleteBlog} blog={blog} />
     )}
     </div>
   )
