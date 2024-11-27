@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ editBlog, deleteBlog, blog }) => {
 
@@ -59,6 +60,12 @@ const togglableBlogInformation = () => (
     </table>
   </div>  
 )
+}
+
+Blog.propTypes = {
+  editBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  blog: PropTypes.object.isRequired,
 }
 
 export default Blog
