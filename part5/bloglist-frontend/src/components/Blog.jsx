@@ -33,13 +33,7 @@ const togglableBlogInformation = () => (
       <td>{`likes:${blog.likes}`}</td><td><button onClick={addLike} type='submit'>Like</button></td>
     </tr>
     <tr>
-      <td>{`Added by: ${blogPoster.username}`}</td>
-    </tr>
-    <tr>
-      <td>{`Added by: ${blogPoster.username}`}</td>
-    </tr>
-    <tr>
-      <td>{`Added by: ${blogPoster.username}`}</td>
+      <td>{`Added by:${blogPoster.username}`}</td>
     </tr>
     <tr>
       <td>
