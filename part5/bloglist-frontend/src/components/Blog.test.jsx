@@ -27,7 +27,7 @@ test('renders blog url, likes, and user when show button is clicked', async () =
   await user.click(button)
   const url = screen.getByText('Render test url')
   const likes = screen.getByText(`likes:${blog.likes}`)
-  const blogUser = screen.getByText(`Added by:${blog.username}`)
+  const blogUser = screen.getByText(`Added by:${blog.user}`)
   expect(url).toBeDefined()
   expect(likes).toBeDefined()
   expect(blogUser).toBeDefined()
