@@ -11,26 +11,28 @@ test('<NewBlogForm /> new blog is created with correct information', async () =>
     title: 'Render test title',
     author: 'Render test author',
     url:'Render test url',
-    likes:4,
+    likes:'4',
     username: 'Render test user'
   }
 
   const submitButton = screen.getByText('Create')
-
-  const titleInput = screen.getByLabelText('Title')
+  
+  const titleInput = screen.getByLabelText("Title")
   const authorInput = screen.getByLabelText('Author')
   const urlInput = screen.getByLabelText('URL')
   const likesInput = screen.getByLabelText('Likes')
 
-  userEvent.type(titleInput, blog.title )
-  userEvent.type(authorInput, blog.author )
-  userEvent.type(urlInput, blog.url )
-  userEvent.type(likesInput, blog.likes )
+  await user.type(titleInput, blog.title )
+  await user.type(authorInput, blog.author )
+  await user.type(urlInput, blog.url )
+  await user.type(likesInput, blog.likes )
 
   await user.click(submitButton)
 
   console.log(createBlog.mock.calls)
   expect(createBlog.mock.calls).toHaveLength(1)
+  console.log(createBlog.mock.calls[0][0])
+  console.log('title', createBlog.mock.calls[0][0].title)
   expect(createBlog.mock.calls[0][0].title).toBe(blog.title)
   expect(createBlog.mock.calls[0][0].author).toBe(blog.author)
   expect(createBlog.mock.calls[0][0].url).toBe(blog.url)

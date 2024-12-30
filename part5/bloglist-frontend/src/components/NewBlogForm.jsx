@@ -34,7 +34,7 @@ const NewBlogForm = ({
                 type="text"
                 value={title}
                 name="title"
-                id='title'
+                id="title"
                 onChange={event => setTitle(event.target.value)}
                 />
               </div>
