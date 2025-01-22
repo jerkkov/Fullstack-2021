@@ -19,73 +19,76 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs.sort((a,b) => {return b.likes - a.likes}) )
-    )  
-  }, [])  
-  
+      setBlogs(blogs.sort((a, b) => { return b.likes - a.likes }))
+    )
+  }, [])
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-    if(loggedUserJSON) {
+    if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
-    }  
+    }
   }, [])
 
-  const handleLogin  = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
     try {
       const user = await loginService.login({
         username, password,
-    })
-    window.localStorage.setItem(
-      'loggedBlogAppUser', JSON.stringify(user)
-    )
+      })
+      window.localStorage.setItem(
+        'loggedBlogAppUser', JSON.stringify(user)
+      )
       blogService.setToken(user.token)
       setUser(user)
-      console.log("user", user)
+      setNotification({ type: 'notification', message: `Welcome ${user.username}!` })
+      setTimeout(() => {
+        setNotification({ type: 'notification', message: null })
+      }, 5000)
+      console.log('user', user)
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setNotification({type:'error', message:'Wrong credentials'})
+      setNotification({ type: 'error', message: 'Wrong credentials' })
       setTimeout(() => {
-        setNotification({type:'error', message:null})
+        setNotification({ type: 'error', message: null })
       }, 5000)
     }
     console.log(`logging in with ${user}`)
-  } 
+  }
 
-  const handleLogout  = (event) => {
+  const handleLogout = (event) => {
     event.preventDefault()
     try {
 
       window.localStorage.removeItem('loggedBlogAppUser')
       setUser(null)
     } catch (exception) {
-      setNotification({type:'error', message:exception})
+      setNotification({ type: 'error', message: exception })
       setTimeout(() => {
-        setNotification({type:'error', message:null})
+        setNotification({ type: 'error', message: null })
       }, 5000)
     }
-    console.log(`logged out`)
-  } 
+  }
 
   const addBlog = (blogObject) => {
     try {
       blogFormRef.current.toggleVisibility()
       blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs([...blogs, returnedBlog])
-      })
-      setNotification({type:'notification', message:`Created new blog ${title}`})
+        .create(blogObject)
+        .then(returnedBlog => {
+          setBlogs([...blogs, returnedBlog])
+        })
+      setNotification({ type: 'notification', message: 'Created new blog' })
       setTimeout(() => {
-        setNotification({type:'notification', message:null})
+        setNotification({ type: 'notification', message: null })
       }, 5000)
     } catch (exception) {
-      setNotification({type:'error', message:`Blog creation failed: ${exception}`})
+      setNotification({ type: 'error', message: `Blog creation failed: ${exception}` })
       setTimeout(() => {
-        setNotification({type:'error', message:null})
+        setNotification({ type: 'error', message: null })
       }, 5000)
     }
   }
@@ -93,22 +96,22 @@ const App = () => {
   const editBlog = (id, blogObject) => {
     try {
       blogService
-      .update(id, blogObject)
-      .then(returnedBlog => {
-        const editedBlogs = blogs.map((blog) => {
-        return  blog.id === returnedBlog.id ?
-             returnedBlog : blog
+        .update(id, blogObject)
+        .then(returnedBlog => {
+          const editedBlogs = blogs.map((blog) => {
+            return blog.id === returnedBlog.id ?
+              returnedBlog : blog
+          })
+          setBlogs(editedBlogs)
         })
-        setBlogs(editedBlogs)
-       })
-      setNotification({type:'notification', message:"Blog updated"})
+      setNotification({ type: 'notification', message: 'Blog updated' })
       setTimeout(() => {
-        setNotification({type:'notification', message:null})
+        setNotification({ type: 'notification', message: null })
       }, 5000)
     } catch (exception) {
-      setNotification({type:'error', message:`Blog failed to update: ${exception}`})
+      setNotification({ type: 'error', message: `Blog failed to update: ${exception}` })
       setTimeout(() => {
-        setNotification({type:'error', message:null})
+        setNotification({ type: 'error', message: null })
       }, 5000)
     }
   }
@@ -117,15 +120,15 @@ const App = () => {
     try {
       blogService.remove(id)
       const blogsWithoutDeleted = blogs.filter(blog => blog.id !== id)
-        setBlogs(blogsWithoutDeleted)
-      setNotification({type:'notification', message:"Blog deleted"})
+      setBlogs(blogsWithoutDeleted)
+      setNotification({ type: 'notification', message: 'Blog deleted' })
       setTimeout(() => {
-        setNotification({type:'notification', message:null})
+        setNotification({ type: 'notification', message: null })
       }, 5000)
     } catch (exception) {
-      setNotification({type:'error', message:`Blog failed to delete: ${exception}`})
+      setNotification({ type: 'error', message: `Blog failed to delete: ${exception}` })
       setTimeout(() => {
-        setNotification({type:'error', message:null})
+        setNotification({ type: 'error', message: null })
       }, 5000)
     }
   }
@@ -133,9 +136,9 @@ const App = () => {
 
   const blogForm = () => (
     <div>
-    {blogs.map(blog =>
-      <Blog key={blog.id} editBlog={editBlog} deleteBlog={deleteBlog} blog={blog} />
-    )}
+      {blogs.map(blog =>
+        <Blog key={blog.id} editBlog={editBlog} deleteBlog={deleteBlog} blog={blog} />
+      )}
     </div>
   )
 
@@ -150,11 +153,11 @@ const App = () => {
       </table>
       {user && blogForm()}
       <Togglable buttonLabel="New blog" ref={blogFormRef}>
-      {user && <NewBlogForm createBlog={addBlog} />}
+        {user && <NewBlogForm createBlog={addBlog} />}
       </Togglable>
-      {!user && <LoginForm 
-        username={username} 
-        password={password} 
+      {!user && <LoginForm
+        username={username}
+        password={password}
         handleUsernameChange={({ target }) => setUsername(target.value)}
         handlePasswordChange={({ target }) => setPassword(target.value)}
         handleSubmit={handleLogin} />}
