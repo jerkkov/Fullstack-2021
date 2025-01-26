@@ -1,7 +1,15 @@
 const { test, expect, beforeEach, describe, content } = require('@playwright/test')
+
 const NAME = 'Ranka Tuhnu'
 const USERNAME = 'RankTuhn'
 const PASSWORD = 'salainen'
+
+const mockBlog = {
+  title: "Rankan uus blogi test",
+  author: "Tyhnu töhn",
+  url: "tuhnunsivu.fi",
+  likes: "5"
+}
 
 const loginWith = async (page, username, password) => {
   await page.getByRole('button', { name: 'Login' }).click()
@@ -10,11 +18,15 @@ const loginWith = async (page, username, password) => {
   await page.getByRole('button', { name: 'Login' }).click()
 } 
 
-const mockBlog = {
-  title: "Rankan uus blogi test",
-  author: "Tyhnu töhn",
-  url: "tuhnunsivu.fi",
-  likes: "5"
+const createBlog = async (page) => {
+  await page.getByRole('button', { name: 'New blog' }).click()
+
+  await page.getByRole('textbox', { name: 'Title' }).fill(mockBlog.title)
+  await page.getByRole('textbox', { name: 'Author' }).fill(mockBlog.author)
+  await page.getByRole('textbox', { name: 'URL' }).fill(mockBlog.url)
+  await page.getByLabel('Likes').fill(mockBlog.likes)
+  
+  await page.getByRole('button', { name: 'Create' }).click()
 }
 
 describe('Blog app', () => {
@@ -59,15 +71,20 @@ describe('Blog app', () => {
     })
 
     test('a new blog can be created', async ({ page }) => {
+     await createBlog(page)
+     await expect(page.getByText(mockBlog.title)).toBeVisible()
+    })
+
+    test('a blog can be liked', async ({ page }) => {
       await page.getByRole('button', { name: 'New blog' }).click()
 
-      await page.getByRole('textbox', { name: 'Title' }).fill(mockBlog.title)
-      await page.getByRole('textbox', { name: 'Author' }).fill(mockBlog.author)
-      await page.getByRole('textbox', { name: 'URL' }).fill(mockBlog.url)
-      await page.getByLabel('Likes').fill(mockBlog.likes)
+      // await page.getByRole('textbox', { name: 'Title' }).fill(mockBlog.title)
+      // await page.getByRole('textbox', { name: 'Author' }).fill(mockBlog.author)
+      // await page.getByRole('textbox', { name: 'URL' }).fill(mockBlog.url)
+      // await page.getByLabel('Likes').fill(mockBlog.likes)
       
-      await page.getByRole('button', { name: 'Create' }).click()
-      await expect(page.getByText(mockBlog.title)).toBeVisible()
+      // await page.getByRole('button', { name: 'Create' }).click()
+      // await expect(page.getByText(mockBlog.title)).toBeVisible()
     })
   })
 })
