@@ -5,10 +5,10 @@ const USERNAME = 'RankTuhn'
 const PASSWORD = 'salainen'
 
 const mockBlog = {
-  title: "Rankan uus blogi test",
-  author: "Tyhnu töhn",
-  url: "tuhnunsivu.fi",
-  likes: "5"
+  title: "blog1",
+  author: "blogger",
+  url: "blogger.fi",
+  likes: "0"
 }
 
 const loginWith = async (page, username, password) => {
@@ -68,23 +68,22 @@ describe('Blog app', () => {
     
     beforeEach(async ({ page }) => {
      await loginWith(page, USERNAME, PASSWORD)
+     await createBlog(page)
     })
 
     test('a new blog can be created', async ({ page }) => {
-     await createBlog(page)
      await expect(page.getByText(mockBlog.title)).toBeVisible()
     })
 
     test('a blog can be liked', async ({ page }) => {
-      await page.getByRole('button', { name: 'New blog' }).click()
-
-      // await page.getByRole('textbox', { name: 'Title' }).fill(mockBlog.title)
-      // await page.getByRole('textbox', { name: 'Author' }).fill(mockBlog.author)
-      // await page.getByRole('textbox', { name: 'URL' }).fill(mockBlog.url)
-      // await page.getByLabel('Likes').fill(mockBlog.likes)
-      
-      // await page.getByRole('button', { name: 'Create' }).click()
-      // await expect(page.getByText(mockBlog.title)).toBeVisible()
+      await expect(page.getByText(mockBlog.title)).toBeVisible()
+      const blogElement = page.locator('table', { hasText: `${mockBlog.title} ${mockBlog.author}Show` })
+      const showButton = blogElement.getByRole('button', { name: 'Show' })
+      await showButton.click()
+      await expect(page.getByText(`likes:${mockBlog.likes}`)).toBeVisible()
+      await page.getByRole('button', { name: 'Like' }).click()
+      const likesIncrementByOne = Number(mockBlog.likes + 1)
+      await expect(page.getByText(`likes:${likesIncrementByOne.toString()}`)).toBeVisible()
     })
   })
 })
