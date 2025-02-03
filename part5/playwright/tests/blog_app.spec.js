@@ -85,15 +85,45 @@ describe('Blog app', () => {
       const likesIncrementByOne = Number(mockBlog.likes + 1)
       await expect(page.getByText(`likes:${likesIncrementByOne.toString()}`)).toBeVisible()
     })
+    
     test('a blog can be deleted', async ({ page }) => {
       await expect(page.getByText(mockBlog.title)).toBeVisible()
+      await page.waitForTimeout(1000) 
       const blogElement = page.locator('table', { hasText: `${mockBlog.title} ${mockBlog.author}Show` })
       const showButton = blogElement.getByRole('button', { name: 'Show' })
       await showButton.click()
       await page.getByRole('button', { name: 'Delete' }).click()
       page.on('dialog', dialog => dialog.accept());
-      await page.waitForTimeout(2000) 
+      await page.waitForTimeout(1000) 
       expect(page.getByText('Blog deleted')).toBeDefined()
+
+    })
+
+    test('a delete blog button can be seen only by blog poster', async ({ page, request }) => {
+      await request.post('http://localhost:3003/api/users', {
+        data: {
+          name: `${NAME}2`,
+          username: `${USERNAME}2`,
+          password: `${PASSWORD}2`
+        }
+      })
+      await expect(page.getByText(mockBlog.title)).toBeVisible()
+      const blogElement = page.locator('table', { hasText: `${mockBlog.title} ${mockBlog.author}Show` })
+      const showButton = blogElement.getByRole('button', { name: 'Show' })
+      await showButton.click()
+      const deleteButton = page.getByRole('button', { name: 'Delete' })
+      await expect(deleteButton).toBeVisible()
+
+      await page.getByRole('button', { name: 'Logout' }).click()
+      await loginWith(page, `${USERNAME}2`, `${PASSWORD}2`)
+      await showButton.click()
+      await expect(page.getByText('Delete')).not.toBeVisible()
+
+
+
+
+
+
 
     })
   })

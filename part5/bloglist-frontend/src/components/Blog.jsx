@@ -1,14 +1,25 @@
 import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ editBlog, deleteBlog, blog }) => {
+const Blog = ({ editBlog, deleteBlog, blog, loggedUser }) => {
 
   const [visible, setVisible] = useState(false)
-  const [blogPoster, setBlogPoster] = useState(false)
+  const [blogPoster, setBlogPoster] = useState()
+  const [userIsBlogPoster, setUserIsBlogPoster] = useState()
+  console.log('blog', blog.user.username)
+  console.log('blog.username', blog.username)
 
   useEffect(() => {
-    setBlogPoster(blog.user ? blog.user : '')
+    if(!blog.user.username)
+      return
+    setBlogPoster(blog.user.username)
   }, [])
+
+  useEffect(() => {
+    if(!blogPoster && !loggedUser)
+      return
+    setUserIsBlogPoster(blogPoster === loggedUser ? true : false )
+  }, [blogPoster, loggedUser])
 
   const addLike = () => {
     const updatedLikes = blog.likes + 1
@@ -23,7 +34,9 @@ const Blog = ({ editBlog, deleteBlog, blog }) => {
   const confirmDelete = () => {
     window.confirm(`Do you really want to delete ${blog.title}`) ? deleteBlog(blog.id) : ''
   }
-
+  console.log('userIsBlogPoster', userIsBlogPoster)
+  console.log('blogPoster', blogPoster)
+  console.log('loggedUser', loggedUser)
   const togglableBlogInformation = () => (
     <>
       <tr>
@@ -33,11 +46,11 @@ const Blog = ({ editBlog, deleteBlog, blog }) => {
         <td>{`likes:${blog.likes}`}</td><td><button onClick={addLike} name='Like' type='submit'>Like</button></td>
       </tr>
       <tr>
-        <td>{`Added by:${blogPoster.username}`}</td>
+        <td>{`Added by:${blogPoster}`}</td>
       </tr>
       <tr>
         <td>
-          <button onClick={() => confirmDelete()} style={{ backgroundColor: 'transparent' }}>Delete</button>
+          {userIsBlogPoster && <button onClick={() => confirmDelete()} style={{ backgroundColor: 'transparent' }}>Delete</button>}
         </td>
       </tr>
     </>

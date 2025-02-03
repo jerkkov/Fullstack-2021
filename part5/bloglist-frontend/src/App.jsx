@@ -79,6 +79,7 @@ const App = () => {
       blogService
         .create(blogObject)
         .then(returnedBlog => {
+          console.log('returnedBlog', returnedBlog)
           setBlogs([...blogs, returnedBlog])
         })
       setNotification({ type: 'notification', message: 'Created new blog' })
@@ -133,11 +134,10 @@ const App = () => {
     }
   }
 
-
   const blogForm = () => (
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} editBlog={editBlog} deleteBlog={deleteBlog} blog={blog} />
+        <Blog key={blog.id} editBlog={editBlog} deleteBlog={deleteBlog} blog={blog} loggedUser={user.username} />
       )}
     </div>
   )
@@ -147,14 +147,14 @@ const App = () => {
       <table>
         <thead>
           <tr>
-            <td><h1>Blogs</h1></td><td><button onClick={handleLogout}>Logout</button></td>
+            <td><h1>Blogs</h1></td><td>{user && <button onClick={handleLogout}>Logout</button>}</td>
           </tr>
         </thead>
       </table>
       {user && blogForm()}
-      <Togglable buttonLabel="New blog" ref={blogFormRef}>
+      {user && <Togglable buttonLabel="New blog" ref={blogFormRef}>
         {user && <NewBlogForm createBlog={addBlog} />}
-      </Togglable>
+      </Togglable>}
       {!user && <LoginForm
         username={username}
         password={password}
