@@ -85,5 +85,16 @@ describe('Blog app', () => {
       const likesIncrementByOne = Number(mockBlog.likes + 1)
       await expect(page.getByText(`likes:${likesIncrementByOne.toString()}`)).toBeVisible()
     })
+    test('a blog can be deleted', async ({ page }) => {
+      await expect(page.getByText(mockBlog.title)).toBeVisible()
+      const blogElement = page.locator('table', { hasText: `${mockBlog.title} ${mockBlog.author}Show` })
+      const showButton = blogElement.getByRole('button', { name: 'Show' })
+      await showButton.click()
+      await page.getByRole('button', { name: 'Delete' }).click()
+      page.on('dialog', dialog => dialog.accept());
+      await page.waitForTimeout(2000) 
+      expect(page.getByText('Blog deleted')).toBeDefined()
+
+    })
   })
 })
