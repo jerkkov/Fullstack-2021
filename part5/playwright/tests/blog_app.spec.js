@@ -1,4 +1,4 @@
-const { test, expect, beforeEach, describe, content } = require('@playwright/test')
+const { test, expect, beforeEach, describe } = require('@playwright/test')
 
 const NAME = 'Ranka Tuhnu'
 const USERNAME = 'RankTuhn'
@@ -18,13 +18,13 @@ const loginWith = async (page, username, password) => {
   await page.getByRole('button', { name: 'Login' }).click()
 } 
 
-const createBlog = async (page) => {
+const createBlog = async (page, title, author, url, likes) => {
   await page.getByRole('button', { name: 'New blog' }).click()
 
-  await page.getByRole('textbox', { name: 'Title' }).fill(mockBlog.title)
-  await page.getByRole('textbox', { name: 'Author' }).fill(mockBlog.author)
-  await page.getByRole('textbox', { name: 'URL' }).fill(mockBlog.url)
-  await page.getByLabel('Likes').fill(mockBlog.likes)
+  await page.getByRole('textbox', { name: 'Title' }).fill(title)
+  await page.getByRole('textbox', { name: 'Author' }).fill(author)
+  await page.getByRole('textbox', { name: 'URL' }).fill(url)
+  await page.getByLabel('Likes').fill(likes)
   
   await page.getByRole('button', { name: 'Create' }).click()
 }
@@ -68,7 +68,7 @@ describe('Blog app', () => {
     
     beforeEach(async ({ page }) => {
      await loginWith(page, USERNAME, PASSWORD)
-     await createBlog(page)
+     await createBlog(page, mockBlog.title, mockBlog.author, mockBlog.url, mockBlog.likes)
     })
 
     test('a new blog can be created', async ({ page }) => {
@@ -118,13 +118,26 @@ describe('Blog app', () => {
       await loginWith(page, `${USERNAME}2`, `${PASSWORD}2`)
       await showButton.click()
       await expect(page.getByText('Delete')).not.toBeVisible()
+    })
+    
+    test('blogs are in ascending order by likes', async ({ page }) => {
+     await createBlog(page, `${mockBlog.title}25`, mockBlog.author, mockBlog.url, `${mockBlog.likes}25`)
+     await expect(page.getByText(`${mockBlog.title}25`)).toBeVisible();
+     await createBlog(page, `${mockBlog.title}6`, mockBlog.author, mockBlog.url, `${mockBlog.likes}6`)
+     await expect(page.getByText(`${mockBlog.title}6`)).toBeVisible();
+     await page.reload()
+     await page.waitForTimeout(1000)
+     
+    const showButtons = page.locator('button[name="toggleShow"]')
+    const count = await showButtons.count()
 
+    for (let i = 0; i < count; i++) {
+      await showButtons.nth(i).click()
+    }
 
-
-
-
-
-
+    const likesElements = await page.locator('tr >> text=likes:').allTextContents()
+    const likesNumbers = likesElements.map(text => parseInt(text.replace('likes:', '').trim(), 10))
+    expect(likesNumbers).toEqual([...likesNumbers].sort((a, b) => b - a))
     })
   })
 })

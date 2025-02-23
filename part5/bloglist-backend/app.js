@@ -30,6 +30,7 @@ app.use('/api/blogs', blogsRouter)
 app.use('/api/login', loginRouter)
 
 if (process.env.NODE_ENV === 'test') {
+    logger.info('DB testing')
     const testingRouter = require('./controllers/testing')
     app.use('/api/testing', testingRouter)
   }

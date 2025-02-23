@@ -6,17 +6,15 @@ const Blog = ({ editBlog, deleteBlog, blog, loggedUser }) => {
   const [visible, setVisible] = useState(false)
   const [blogPoster, setBlogPoster] = useState()
   const [userIsBlogPoster, setUserIsBlogPoster] = useState()
-  console.log('blog', blog.user.username)
-  console.log('blog.username', blog.username)
 
   useEffect(() => {
-    if(!blog.user.username)
+    if(!blog.user || !blog.user.username)
       return
     setBlogPoster(blog.user.username)
   }, [])
 
   useEffect(() => {
-    if(!blogPoster && !loggedUser)
+    if(!blogPoster || !loggedUser)
       return
     setUserIsBlogPoster(blogPoster === loggedUser ? true : false )
   }, [blogPoster, loggedUser])
@@ -34,9 +32,6 @@ const Blog = ({ editBlog, deleteBlog, blog, loggedUser }) => {
   const confirmDelete = () => {
     window.confirm(`Do you really want to delete ${blog.title}`) ? deleteBlog(blog.id) : ''
   }
-  console.log('userIsBlogPoster', userIsBlogPoster)
-  console.log('blogPoster', blogPoster)
-  console.log('loggedUser', loggedUser)
   const togglableBlogInformation = () => (
     <>
       <tr>

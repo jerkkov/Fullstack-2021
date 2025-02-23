@@ -47,7 +47,6 @@ const App = () => {
       setTimeout(() => {
         setNotification({ type: 'notification', message: null })
       }, 5000)
-      console.log('user', user)
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -79,7 +78,6 @@ const App = () => {
       blogService
         .create(blogObject)
         .then(returnedBlog => {
-          console.log('returnedBlog', returnedBlog)
           setBlogs([...blogs, returnedBlog])
         })
       setNotification({ type: 'notification', message: 'Created new blog' })
