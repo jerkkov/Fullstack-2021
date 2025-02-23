@@ -46,7 +46,6 @@ test('when show more information button is clicked twice', async () => {
   const user = userEvent.setup()
   const showButton = screen.getByText('Show')
   await user.click(showButton)
-  
   const likeButton = screen.getByText('Like')
   await user.click(likeButton)
   await user.click(likeButton)

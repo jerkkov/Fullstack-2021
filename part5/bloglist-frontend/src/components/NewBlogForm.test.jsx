@@ -16,8 +16,7 @@ test('<NewBlogForm /> new blog is created with correct information', async () =>
   }
 
   const submitButton = screen.getByText('Create')
-  
-  const titleInput = screen.getByLabelText("Title")
+  const titleInput = screen.getByLabelText('Title')
   const authorInput = screen.getByLabelText('Author')
   const urlInput = screen.getByLabelText('URL')
   const likesInput = screen.getByLabelText('Likes')
